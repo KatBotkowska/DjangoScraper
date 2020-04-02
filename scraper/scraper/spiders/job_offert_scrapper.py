@@ -72,7 +72,7 @@ class JjcrawlerSpider(scrapy.Spider):
                 if item_pos <= last_top_position_seen:
                     continue
                 else:
-                    offert = items.JobOffertItem
+                    offert = items.JobOffertItem()
                     offert['title'] = item.xpath(f"normalize-space({self.ITEM_SELECTOR}/{self.UPPER_ROW}/div[@class='css-18hez3m']/div[@class='css-wjfk7i']/text())").get()
                     offert['price_range'] = item.xpath(f"normalize-space({self.ITEM_SELECTOR}/{self.UPPER_ROW}/div[@class='css-v6uxww']/span/text())").get()
                     offert['company'] = item.xpath(f"normalize-space({self.ITEM_SELECTOR}/{self.BOTTOM_ROW}/div[@class='css-pdwro7']/div[@class='css-ajz12e']/text())").get()

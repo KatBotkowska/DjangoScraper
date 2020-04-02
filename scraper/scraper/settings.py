@@ -8,12 +8,18 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-
+import os
 import sys
 sys.path.append('/home/kasia/Dokumenty/Django/Django_Rest')
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-
+# sys.path.append(os.path.dirname(os.path.abspath('.')))
+# # Do not forget the change iCrawler part based on your project name
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'Django_Rest.Django_Rest.settings'
+#
+# This is required only if Django Version > 1.8
+# import django
+# django.setup()
 
 BOT_NAME = 'scraper'
 
@@ -61,6 +67,9 @@ ROBOTSTXT_OBEY = True
 #DOWNLOADER_MIDDLEWARES = {
 #    'scraper.middlewares.ScraperDownloaderMiddleware': 543,
 #}
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_selenium.SeleniumMiddleware': 800
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -94,3 +103,10 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+#SELENIUM
+from shutil import which
+
+SELENIUM_DRIVER_NAME = 'firefox'
+SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
+SELENIUM_DRIVER_ARGUMENTS=['-headless']  # '--headless' if using chrome instead of firefox
