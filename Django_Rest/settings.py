@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'scraper',
     'jobIT',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
