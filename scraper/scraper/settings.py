@@ -110,3 +110,6 @@ from shutil import which
 SELENIUM_DRIVER_NAME = 'firefox'
 SELENIUM_DRIVER_EXECUTABLE_PATH = which('geckodriver')
 SELENIUM_DRIVER_ARGUMENTS=['-headless']  # '--headless' if using chrome instead of firefox
+
+#ENCODING
+FEED_EXPORT_ENCODING = 'utf-8'
