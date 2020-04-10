@@ -37,8 +37,6 @@ class ScraperPipeline(object):
             hashed_list.remove(hash_id)
         return item
 
-print('hashed list to:',  hashed_list)
-
 for hash_item in hashed_list:
     obj = JobOffert.objects.filter(hash_id=hash_item)
     obj.still_active = False
