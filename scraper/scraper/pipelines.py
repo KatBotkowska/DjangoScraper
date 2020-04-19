@@ -14,6 +14,7 @@ from jobIT.models import JobOffert
 
 hashed_items_db = JobOffert.objects.filter(still_active = True)
 hashed_list=[item.hash_id for item in hashed_items_db]
+print(len(hashed_list))
 
 class ScraperPipeline(object):
 
@@ -37,10 +38,14 @@ class ScraperPipeline(object):
             hashed_list.remove(hash_id)
         return item
 
-for hash_item in hashed_list:
-    obj = JobOffert.objects.filter(hash_id=hash_item)
-    obj.still_active = False
-    obj.end_date = timezone.now() - timedelta(days=1)
+    def close_spider(self, spider):
 
+        for hash_item in hashed_list:
+            obj = JobOffert.objects.get(hash_id=hash_item)
+            obj.still_active = False
+            obj.end_date = timezone.now() - timedelta(days=1)
+            print(obj)
+            obj.save()
+        return hashed_list
 
 
