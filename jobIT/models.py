@@ -10,10 +10,11 @@ class JobOffert(models.Model):
     job_service = models.CharField(default="JustJoinIT", max_length=128)
     scrappy_date = models.DateField(auto_now_add=True)
     job_url = models.URLField()
-    hash_id = models.CharField(max_length=516)
+    hash_id = models.CharField(max_length=516, unique=True)
     still_active = models.BooleanField(default=True)
     open_date = models.DateField(auto_now_add=True)
     end_date = models.DateField(blank=True, null=True)
+    scrapped=models.BooleanField(default=False)
     #zmienić price range na salary
     def __str__(self):
         return f'{self.title}, {self.company}'
