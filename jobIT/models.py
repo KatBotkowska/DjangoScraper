@@ -14,7 +14,7 @@ class JobOffert(models.Model):
     still_active = models.BooleanField(default=True)
     open_date = models.DateField(auto_now_add=True)
     end_date = models.DateField(blank=True, null=True)
-    scrapped=models.BooleanField(default=False)
+    scrapped=models.BooleanField(default=True)
     #zmienić price range na salary
     def __str__(self):
         return f'{self.title}, {self.company}'
