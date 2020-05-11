@@ -21,8 +21,7 @@ hashed_items_db = JobOffert.objects.filter(still_active = True)
 hashed_list=[item.hash_id for item in hashed_items_db]
 
 class ScraperPipeline(object):
-    # global hashed_list
-    # hashed_list = hashed_list()
+
 
     def create_hash(self, *args):
         m = hashlib.md5()
@@ -40,7 +39,7 @@ class ScraperPipeline(object):
         #item['hash_id'] = hash_id
         if hash_id not in hashed_list:
             item['hash_id'] = hash_id
-            item['scrapped'] = True
+            #item['scrapped'] = True
             item.save()
         else:
             hashed_list.remove(hash_id)

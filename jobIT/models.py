@@ -7,7 +7,7 @@ class JobOffert(models.Model):
     company = models.CharField(max_length=64)
     city = models.CharField(max_length=64)
     keywords = models.CharField(max_length=256)
-    job_service = models.CharField(default="JustJoinIT", max_length=128)
+    job_service = models.CharField(max_length=128)
     scrappy_date = models.DateField(auto_now_add=True)
     job_url = models.URLField()
     hash_id = models.CharField(max_length=516, unique=True)
