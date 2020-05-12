@@ -81,6 +81,7 @@ class JjcrawlerSpider(scrapy.Spider):
                     offert['keywords'] = keywords
                     offert['job_url'] = item.xpath(f"{self.WRAPPER_SELECTOR}").xpath(".//@href").get()
                     offert['scrapped'] = True
+                    offert['still_active'] = True
                     offert['job_service'] = 'JustJoinIT'
                     yield offert
                     # yield {

@@ -56,6 +56,7 @@ class NfjcrawlerSpider(scrapy.Spider):
                         f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy technology btn btn-outline-secondary btn-sm']/text()").extract())
                 offert['job_url'] = item.xpath('./a/@href').get()
                 offert['scrapped'] = True
+                offert['still_active'] = True
                 offert['job_service'] = 'NoFluffJobs'
                 yield offert
                 '''{

@@ -61,6 +61,7 @@ class BDcrawlerSpider(scrapy.Spider):
                         "./div[@class='technologies']/ul[@class='tags']/child::li/div/text()").extract()
                 offert['job_url'] = item.xpath('.//@href').get()
                 offert['scrapped'] = True
+                offert['still_active'] = True
                 offert['job_service'] = 'BulldogJob'
                 yield offert
                 # yield {
