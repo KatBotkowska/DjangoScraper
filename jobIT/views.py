@@ -3,13 +3,14 @@ from django.shortcuts import render
 
 from rest_framework import viewsets
 from rest_framework import views
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.views import APIView
 import django_filters.rest_framework
 from .models import JobOffert
 from .serializers import JobOffertSerializer
 
 class JobOffertViewSet(viewsets.ModelViewSet):
+    filter_fields = ('city', 'company', 'still_active', 'job_service')
     queryset = JobOffert.objects.all().order_by('city', 'title')
     serializer_class = JobOffertSerializer
 
@@ -18,17 +19,27 @@ class SingleJobOffertView(RetrieveAPIView):
     serializer_class = JobOffertSerializer
 
 
-class CityView(viewsets.ModelViewSet):
-    queryset = JobOffert.objects.all().order_by('city', 'title')
+class CityView(ListAPIView):
+    #queryset = JobOffert.objects.all().order_by('city', 'title')
     serializer_class = JobOffertSerializer
     #filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_fields = ('city', 'company')
     # filterset_fields = ('city')
     # model = JobOffert
-    # def get_queryset(self):
-    #     queryset = JobOffert.objects.all().order_by('city', 'title')
-    #     city = self.request.query_params.get('city')
-    #     if city:
-    #         queryset = queryset.filter(city=city)
-    #     return queryset
+    def get_queryset(self):
+        queryset = JobOffert.objects.all().order_by('city', 'title')
+        city = self.kwargs.get('city')
+        #city = self.request.query_params.get('city')
+        if city:
+            queryset = queryset.filter(city=city) #TODO - małe wielkie litery polskie znaki
+        return queryset
 
+class ServiceView(ListAPIView):
+    serializer_class = JobOffertSerializer
+    filter_fields = ('city', 'company')
+    def get_queryset(self):
+        queryset = JobOffert.objects.all().order_by('city', 'title')
+        service = self.kwargs.get('service')
+        if service:
+            queryset = queryset.filter(job_service=service) #TODO - małe wielkie litery polskie znaki
+        return queryset
