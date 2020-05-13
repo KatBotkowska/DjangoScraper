@@ -11,5 +11,6 @@ urlpatterns = [
     path('job_offerts/<int:pk>', views.SingleJobOffertView.as_view(), name='job_offert'),
     path('job_offerts/city/<city>', views.CityView.as_view(), name='city'),
     path('job_offerts/service/<service>', views.ServiceView.as_view(), name='service'),
+    path('job_offerts/technology/<technology>', views.TechView.as_view(), name='technology'),
 
 ]
