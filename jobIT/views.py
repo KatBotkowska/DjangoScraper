@@ -15,8 +15,8 @@ class JobOffertViewSet(viewsets.ModelViewSet):
     serializer_class = JobOffertSerializer
     filter_backends = (filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter)
     search_fields = ('keywords',)
-    filter_fields = ('city', )
-    #filter_fields = ('city', 'company', 'still_active', 'job_service')
+    #filter_fields = ('city', )
+    filter_fields = ('city', 'company', 'still_active', 'job_service')
     ordering = ('city')
 
 
