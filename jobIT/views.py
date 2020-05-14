@@ -12,13 +12,14 @@ from .serializers import JobOffertSerializer
 
 
 class JobOffertViewSet(viewsets.ModelViewSet):
-    queryset = self.get_queryset()
+    queryset = JobOffert.objects.all()
     serializer_class = JobOffertSerializer
     filter_backends = (filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter)
     search_fields = ('keywords',)
     filter_fields = ('city', )
     #filter_fields = ('city', 'company', 'still_active', 'job_service')
     ordering = ('city')
+
 
 
 class SingleJobOffertView(RetrieveAPIView):
