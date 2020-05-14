@@ -5,13 +5,14 @@ from rest_framework import viewsets, filters
 from rest_framework import views
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.views import APIView
-from django_filters.rest_framework import DjangoFilterBackend
+from url_filter.integrations.drf import DjangoFilterBackend
+#from django_filters.rest_framework import DjangoFilterBackend
 from .models import JobOffert
 from .serializers import JobOffertSerializer
 
 
 class JobOffertViewSet(viewsets.ModelViewSet):
-    queryset = JobOffert.objects.all()
+    queryset = self.get_queryset()
     serializer_class = JobOffertSerializer
     filter_backends = (filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter)
     search_fields = ('keywords',)
