@@ -52,16 +52,25 @@ class ScraperPipeline(object):
 
 
     def close_spider(self, spider):
-        not_scrapped_items=JobOffert.objects.filter(scrapped=False, still_active=True)
+        if spider.name == 'nfjcrawler':
+            job_service = 'NoFluffJobs'
+        elif spider.name == 'jjcrawler':
+            job_service = 'JustJoinIT'
+        elif spider.name == 'jjcrawler':
+            job_service = 'BulldogJob'
+
+        not_scrapped_items=JobOffert.objects.filter(scrapped=False, still_active=True, job_service=job_service)
         for item in not_scrapped_items:
             item.still_active = False
             item.end_date = timezone.now() - timedelta(days=1)
             item.save()
-        scrapped_items=JobOffert.objects.filter(scrapped=True)
+        scrapped_items=JobOffert.objects.filter(scrapped=True, job_service=job_service)
         for item in scrapped_items:
             item.scrapped = False
             item.save()
         return item
+
+
 
         # for hash_item in hashed_list:
         #     obj = JobOffert.objects.get(hash_id=hash_item)
