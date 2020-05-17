@@ -48,12 +48,14 @@ class NfjcrawlerSpider(scrapy.Spider):
                 offert = items.JobOffertItem()
                 offert['title'] = item.xpath(f"normalize-space({self.FIRST_COL}/h4/text())").get()
                 offert['price_range'] = ''.join(item.xpath(
-                        f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy salary btn btn-outline-secondary btn-sm']/text()").extract())
-                offert['company'] = item.xpath(f"normalize-space({self.FIRST_COL}/span/text())").get().replace('in', '', 1)
+                    f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy salary btn btn-outline-secondary btn-sm']/text()").extract())
+                offert['company'] = item.xpath(f"normalize-space({self.FIRST_COL}/span/text())").get().replace('in', '',
+                                                                                                               1).replace(
+                    'w ', '', 1)
                 offert['city'] = item.xpath(
-                        f"normalize-space({self.SECOND_COL}/span[@class='posting-info__location d-flex align-items-center ml-auto']/nfj-posting-item-city/text())").get()
+                    f"normalize-space({self.SECOND_COL}/span[@class='posting-info__location d-flex align-items-center ml-auto']/nfj-posting-item-city/text())").get()
                 offert['keywords'] = ''.join(item.xpath(
-                        f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy technology btn btn-outline-secondary btn-sm']/text()").extract())
+                    "./a/div[@class='posting-info position-relative d-none d-lg-flex flex-grow-1']/nfj-posting-item-tags[@class='ml-3']/nfj-posting-item-tag/object/a/text()").extract())
                 offert['job_url'] = item.xpath('./a/@href').get()
                 offert['scrapped'] = True
                 offert['still_active'] = True
