@@ -20,7 +20,7 @@ from jobIT.models import JobOffert
 hashed_items_db = JobOffert.objects.filter(still_active = True)
 #hashed_items_db = JobOffert.objects.all()
 hashed_list=[item.hash_id for item in hashed_items_db]
-print(hashed_list)
+#print(hashed_list)
 
 class ScraperPipeline(object):
 
@@ -52,19 +52,20 @@ class ScraperPipeline(object):
 
 
     def close_spider(self, spider):
+        global service
         if spider.name == 'nfjcrawler':
-            job_service = 'NoFluffJobs'
+            service = 'NoFluffJobs'
         elif spider.name == 'jjcrawler':
-            job_service = 'JustJoinIT'
-        elif spider.name == 'jjcrawler':
-            job_service = 'BulldogJob'
+            service = 'JustJoinIT'
+        elif spider.name == 'bdcrawler':
+            service = 'BulldogJob'
 
-        not_scrapped_items=JobOffert.objects.filter(scrapped=False, still_active=True, job_service=job_service)
+        not_scrapped_items=JobOffert.objects.filter(scrapped=False, still_active=True, job_service=service)
         for item in not_scrapped_items:
             item.still_active = False
             item.end_date = timezone.now() - timedelta(days=1)
             item.save()
-        scrapped_items=JobOffert.objects.filter(scrapped=True, job_service=job_service)
+        scrapped_items=JobOffert.objects.filter(scrapped=True, job_service=service)
         for item in scrapped_items:
             item.scrapped = False
             item.save()
