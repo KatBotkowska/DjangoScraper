@@ -34,7 +34,7 @@ class ScraperPipeline(object):
         return data
 
     def process_item(self, item, spider):
-        args = item['title'] + item['price_range'][0] + item['company'] + item['city']
+        args = item['title'] + item['price_range'] + item['company'] + item['city']
         for k in item['keywords']:
             args = args + k
         hash_id = self.create_hash(args)
