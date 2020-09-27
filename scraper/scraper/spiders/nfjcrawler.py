@@ -10,8 +10,8 @@ import time
 class NfjcrawlerSpider(scrapy.Spider):
     name = 'nfjcrawler'
     PAUSE_TIME = 1
-    FIRST_COL = "./a/nfj-posting-item-title/div[@class='posting-title__wrapper']"
-    SECOND_COL = "./a/div[@class='posting-info position-relative d-none d-lg-flex flex-grow-1']"
+    FIRST_COL =  "./nfj-posting-item-title/div[@class='posting-title__wrapper']"
+    SECOND_COL = "./div[contains(@class,'posting-info')]"
 
     #
     def start_requests(self):
@@ -41,22 +41,16 @@ class NfjcrawlerSpider(scrapy.Spider):
 
         for i in range(last_button):
 
-            content_wrapper = response_obj.xpath(
-                ".//div[@class='main-content__wrapper']/div/nfj-postings-search/div[@class='container mb-5']/nfj-main-loader/div[@class='mt-5']/nfj-search-results/nfj-postings-list")
+            content_wrapper = response_obj.xpath(".//nfj-search-results/nfj-postings-list")
 
-            for item in content_wrapper.xpath(".//nfj-postings-item"):
+            for item in content_wrapper.xpath(".//a[contains(@class,'posting-list-item')]"):
                 offert = items.JobOffertItem()
                 offert['title'] = item.xpath(f"normalize-space({self.FIRST_COL}/h4/text())").get()
-                offert['price_range'] = ''.join(item.xpath(
-                    f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy salary btn btn-outline-secondary btn-sm']/text()").extract())
-                offert['company'] = item.xpath(f"normalize-space({self.FIRST_COL}/span/text())").get().replace('in', '',
-                                                                                                               1).replace(
-                    'w ', '', 1)
-                offert['city'] = item.xpath(
-                    f"normalize-space({self.SECOND_COL}/span[@class='posting-info__location d-flex align-items-center ml-auto']/nfj-posting-item-city/text())").get()
-                offert['keywords'] = ''.join(item.xpath(
-                    "./a/div[@class='posting-info position-relative d-none d-lg-flex flex-grow-1']/nfj-posting-item-tags[@class='ml-3']/nfj-posting-item-tag/object/a/text()").extract())
-                offert['job_url'] = item.xpath('./a/@href').get()
+                offert['price_range'] = ''.join(item.xpath(f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy salary btn btn-outline-secondary btn-sm']/text()").extract())
+                offert['company'] = item.xpath(f"normalize-space({self.FIRST_COL}/span/text())").get().replace('w ','',1)
+                offert['city'] = item.xpath(f"normalize-space({self.SECOND_COL}/span[@class='posting-info__location d-flex align-items-center ml-auto']/nfj-posting-item-city/text())").get()
+                offert['keywords'] = ''.join(item.xpath("./a/div[@class='posting-info position-relative d-none d-lg-flex flex-grow-1']/nfj-posting-item-tags[@class='ml-3']/nfj-posting-item-tag/object/a/text()").extract())
+                offert['job_url'] = 'nofluffjobs.com'+item.xpath('./@href').get()
                 offert['scrapped'] = True
                 offert['still_active'] = True
                 offert['job_service'] = 'NoFluffJobs'
@@ -73,10 +67,10 @@ class NfjcrawlerSpider(scrapy.Spider):
                     'url': item.xpath('./a/@href').get()
                 }'''
 
-            # Go to the next page
-            next_button = driver.find_element_by_xpath(
-                ".//ul[@class='pagination']/li[@class='page-item active']/following-sibling::li[1]/a")
-            driver.execute_script("arguments[0].click();", next_button)
+                # Go to the next page
+                next_button = driver.find_element_by_xpath(
+                    ".//ul[@class='pagination']/li[@class='page-item active']/following-sibling::li[1]/a")
+                driver.execute_script("arguments[0].click();", next_button)
 
-            time.sleep(self.PAUSE_TIME)
-            response_obj = self.fetch_html(driver)
+                time.sleep(self.PAUSE_TIME)
+                response_obj = self.fetch_html(driver)
