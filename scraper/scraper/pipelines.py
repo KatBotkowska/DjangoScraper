@@ -7,6 +7,7 @@
 import hashlib
 import random
 from datetime import timedelta
+from django.db import IntegrityError
 
 from django.utils import timezone
 
@@ -40,9 +41,12 @@ class ScraperPipeline(object):
         hash_id = self.create_hash(args)
         #item['hash_id'] = hash_id
         if hash_id not in hashed_list:
-            item['hash_id'] = hash_id
-            #item['scrapped'] = True
-            item.save()
+            try:
+                item['hash_id'] = hash_id
+                #item['scrapped'] = True
+                item.save()
+            except IntegrityError as e:
+                return e.__cause__
         else:
             hashed_list.remove(hash_id)
             old_item = JobOffert.objects.get(hash_id=hash_id)
