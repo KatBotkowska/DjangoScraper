@@ -50,7 +50,7 @@ class BDcrawlerSpider(scrapy.Spider):
             for item in content_wrapper.xpath(".//a[starts-with(@class,'job-item')]"):
                 offert = items.JobOffertItem()
                 offert['title'] = item.xpath(
-                    f"normalize-space({self.JOB_DETAILS_DIV}/div[@class='title']/h2/text())").get()
+                    f"normalize-space({self.JOB_DETAILS_DIV}/div[@class='title']/h3/text())").get()
                 offert['price_range'] = ''.join(
                     item.xpath(f"{self.JOB_DETAILS_DIV}/{self.META_DIV}/div[@class='salary']/text()").extract())
                 offert['company'] = item.xpath(
