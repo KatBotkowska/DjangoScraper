@@ -45,11 +45,11 @@ class NfjcrawlerSpider(scrapy.Spider):
 
             for item in content_wrapper.xpath(".//a[contains(@class,'posting-list-item')]"):
                 offert = items.JobOffertItem()
-                offert['title'] = item.xpath(f"normalize-space({self.FIRST_COL}/h4/text())").get()
+                offert['title'] = item.xpath(f"normalize-space({self.FIRST_COL}/h3/text())").get()
                 offert['price_range'] = ''.join(item.xpath(f"{self.SECOND_COL}/nfj-posting-item-tags/span[@class='text-truncate badgy salary btn btn-outline-secondary btn-sm']/text()").extract())
                 offert['company'] = item.xpath(f"normalize-space({self.FIRST_COL}/span/text())").get().replace('w ','',1)
                 offert['city'] = item.xpath(f"normalize-space({self.SECOND_COL}/span[@class='posting-info__location d-flex align-items-center ml-auto']/nfj-posting-item-city/text())").get()
-                offert['keywords'] = ''.join(item.xpath("./a/div[@class='posting-info position-relative d-none d-lg-flex flex-grow-1']/nfj-posting-item-tags[@class='ml-3']/nfj-posting-item-tag/object/a/text()").extract())
+                offert['keywords'] = ''.join(item.xpath(".//div[@class='posting-info position-relative d-none d-lg-flex flex-grow-1']/nfj-posting-item-tags[@class='ml-3']/nfj-posting-item-tag/object/a/text()").extract())
                 offert['job_url'] = 'nofluffjobs.com'+item.xpath('./@href').get()
                 offert['scrapped'] = True
                 offert['still_active'] = True
